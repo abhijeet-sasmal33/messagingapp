@@ -1,0 +1,6 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+channels[daphne]
+django-channels-jwt
+channels_redis
