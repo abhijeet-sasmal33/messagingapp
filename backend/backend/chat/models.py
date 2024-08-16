@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Channels(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     channel_name = models.CharField(max_length=255)
     status = models.BooleanField(default=False)
 
@@ -19,5 +19,5 @@ class Messagelog(models.Model):
 
 
 class Friendship(models.Model):
-    to = models.ForeignKey(User, on_delete=models.CASCADE)
-    person = models.ForeignKey(User, on_delete=models.CASCADE)
+    to = models.ForeignKey(User,related_name='friend_requests_sent', on_delete=models.CASCADE)
+    person = models.ForeignKey(User,related_name='friend_requests_recieved', on_delete=models.CASCADE)

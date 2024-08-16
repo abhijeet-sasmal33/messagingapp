@@ -3,4 +3,5 @@ from .views import *
 
 urlpatterns = [
     path('register', view=createUser),
+    path('auth', view=isAuthenticated),
 ]

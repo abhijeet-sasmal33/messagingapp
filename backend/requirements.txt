@@ -4,3 +4,4 @@ djangorestframework-simplejwt
 channels[daphne]
 django-channels-jwt
 channels_redis
+django-cors-headers

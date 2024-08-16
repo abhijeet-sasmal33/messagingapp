@@ -5,17 +5,20 @@ from rest_framework import status
 from .models import Friendship
 from django.db.models import Q
 from django.http import JsonResponse
+import json
 
 # Create your views here.
 @api_view(['POST'])
 def createUser(request):
     if request.method == 'POST':
-        username = request.POST['email']
-        password = request.POST['password']
+        data = json.loads(request.body)
+        username = data['email']
+        password = data['password']
+        first_name = data['first_name']
+        last_name = data['last_name']
         email =  username
 
-        user = User.objects.create_user(username=username, password=password, email=email)
-
+        user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
         return Response({'message': "User Registeration successful"})
     else:
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -35,3 +38,10 @@ def addFriends(request):
         fr = Friendship.objects.create(person=user, to=to)
         return Response({'message': "Friends Added"})
 
+@api_view(['POST'])
+def isAuthenticated(request):
+    user = request.user
+    if user.isAuthenticated:
+        return Response({'msg': True})
+    else:
+        return Response({'msg': False})
