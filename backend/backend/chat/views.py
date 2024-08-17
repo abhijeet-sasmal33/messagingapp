@@ -41,7 +41,7 @@ def addFriends(request):
 @api_view(['POST'])
 def isAuthenticated(request):
     user = request.user
-    if user.isAuthenticated:
+    if user.is_authenticated:
         return Response({'msg': True})
     else:
         return Response({'msg': False})
