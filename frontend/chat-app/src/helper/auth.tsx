@@ -1,25 +1,30 @@
+import Login from "@/pages/Login/Login";
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
-const auth = () => {
+const Auth = () => {
   const backend_url = import.meta.env.VITE_APP_BACKEND_URL;
   const [isAuthenticated, setIsAuthenticated] = useState<Boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem("token");
       const refresh = localStorage.getItem("refresh");
+
       if (token) {
         try {
-          const response = await axios.get(backend_url + "/auth", {
+          const response = await axios.post(backend_url + "/auth","", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          if (response.data?.msg) {
+          if (response.data.msg) {
             setIsAuthenticated(true);
           } else {
             try {
@@ -52,11 +57,11 @@ const auth = () => {
     checkAuth();
   }, []);
 
-  if (isAuthenticated) {
-    return <></>;
-  } else {
-    return <div>auth</div>;
-  }
+ return (
+  <>
+  {isLoading ? <>Loading</> : isAuthenticated ? <Outlet /> : navigate('/login')}
+  </>
+ )
 };
 
-export default auth;
+export default Auth;
